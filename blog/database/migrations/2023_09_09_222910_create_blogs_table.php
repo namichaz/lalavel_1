@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if(!Schema::hasTable('portfolio')){
-            Schema::create('portfolio', function (Blueprint $table) {
+        if(!Schema::hasTable('blogs')){
+            Schema::create('blogs', function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->string('title',100);
                 $table->text('content');
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('portfolio');
+        Schema::dropIfExists('blogs');
     }
 };
