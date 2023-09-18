@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BlogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,4 +15,24 @@ use Illuminate\Support\Facades\Route;
 */
 
 // ブログ一覧画面を表示
-Route::get('/', 'BlogController@showList')->name('blogs');
+//Route::get('/', 'App\Http\Controller\BlogController@showList')->name('blogs');
+Route::get('/', [BlogController::class,'showList'])->name('blogs');
+
+// ブログ登録画面を表示
+Route::get('/blog/create', [BlogController::class,'showCreate'])->name('create');
+
+// ブログの登録
+Route::post('/blog/store',[BlogController::class,'exeStore'])->name('store');
+
+// ブログ詳細画面を表示
+Route::get('/blog/{id}', [BlogController::class,'showDetail'])->name('show');
+
+// ブログ編集画面を表示
+Route::get('/blog/edit/{id}', [BlogController::class,'showEdit'])->name('edit');
+
+// ブログの編集を登録
+Route::post('/blog/update',[BlogController::class,'exeUpdate'])->name('update');
+
+// ブログの削除
+Route::post('/blog/delete/{id}',[BlogController::class,'exeDelete'])->name('delete');
+

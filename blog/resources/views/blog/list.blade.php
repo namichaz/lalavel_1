@@ -1,52 +1,44 @@
-<!DOCTYPE HTML>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>ブログ</title>
-    <link rel="stylesheet" href="/css/app.css">
-    <script src="/js/app.js" defer></script>
-</head>
-<body>
-    <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">ブログ</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-    <div class="navbar-nav">
-      <a class="nav-item nav-link active" href="#">ブログ一覧 <span class="sr-only"></span></a>
-      <a class="nav-item nav-link" href="#">ブログ投稿</a>
-    </div>
-  </div>
-</nav>
-    </header>
-    <br>
-    <div class="container">
-    <div class="row">
-  <div class="col-md-8 col-md-offset-2">
+@extends('blog.layout')
+@section('title','ブログ一覧')
+@section('content')
+<div class="row">
+  <div class="col-md-10 col-md-offset-2">
       <h2>ブログ記事一覧</h2>
+      @if(session('err_msg'))
+        <p class="text=danger">
+            {{session('err_msg')}}
+        </p>
+        @endif
       <table class="table table-striped">
           <tr>
               <th>記事番号</th>
-              <th>日付</th>
               <th>タイトル</th>
+              <th>日付</th>
+              <th></th>
               <th></th>
           </tr>
+          @foreach ($blogs as $blog)
           <tr>
-              <td>1</td>
-              <td>2020/06/30</td>
-              <td>テスト</td>
-              <td></td>
+              <td>{{$blog->id}}</td>
+              <td><a href="/blog/{{$blog->id}}">{{$blog->title}}</a></td>
+              <td>{{$blog->updated_at}}</td>
+              <td><button type="button" class="btn btn-primary" onclick="location.href='/blog/edit/{{$blog->id}}'">編集</button></td>
+              <form method="POST" action="{{ route('delete',$blog->id) }}" onSubmit="return checkDelete()">
+                @csrf
+              <td><button type="submit" class="btn btn-primary" onclick="">削除</button></td>
+              </form>
           </tr>
+          @endforeach
       </table>
   </div>
+  <script>
+function checkDelete(){
+if(window.confirm('削除してよろしいですか？')){
+    return true;
+} else {
+    return false;
+}
+}
+</script>
 </div>
-    </div>
-    <footer class="footer bg-dark  fixed-bottom">
-    <div class="container text-center">
-    <span class="text-light">©︎福のプログラミング講座</span>
-</div>
-    </footer>
-</body>
-</html>
+@endsection
